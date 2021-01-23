@@ -21,49 +21,47 @@ public class FileEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_file")
-    private Long id_file;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "nombre")
-    private String nombre;
-    @Column(name = "tipo")
-    private String tipo;
-    //image bytes can have large lengths so we specify a value
-    //which is more than the default length for picByte column
+    @Column(name = "name")
+    private String name;
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "file")
-    //private byte[] file;
     private Blob file;
 
     public FileEntity() {
     }
 
-    public FileEntity(String name, String type) {
-        this.nombre = nombre;
-        this.tipo = tipo;
+    public FileEntity(String nombre, String tipo) {
+        this.name = nombre;
+        this.type = tipo;
     }
 
     public Long getId_File() {
-        return id_file;
+        return id;
     }
 
-    public void setId_File(Long id_file) {
-        this.id_file = id_file;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getType() {
+        return type;
     }
 
-    public void setTipo(String type) {
-        this.tipo = tipo;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Blob getFile() {
@@ -73,7 +71,5 @@ public class FileEntity implements Serializable {
     public void setFile(Blob fileBlob) {
         this.file = fileBlob;
     }
-
-
 
 }

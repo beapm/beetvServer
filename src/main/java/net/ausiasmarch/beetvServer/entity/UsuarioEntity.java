@@ -23,13 +23,13 @@ public class UsuarioEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Long id_usuario;
+    @Column(name = "id")
+    private Long id;
     private String nombre;
     private String apellido1;
     private String apellido2;
     private String email;
-    private String username;
+    private String login;
     
     @JsonIgnore
     private String password;
@@ -47,21 +47,21 @@ public class UsuarioEntity implements Serializable {
     @JoinColumn(name="id_tipousuario")
     private TipousuarioEntity tipousuario;
     
-    private FileEntity file;
+    private Long id_file;
 
     public UsuarioEntity() {
     }
 
     public UsuarioEntity(Long id) {
-        this.id_usuario = id;
+        this.id = id;
     }
 
     public Long getId() {
-        return id_usuario;
+        return id;
     }
 
     public void setId(Long id) {
-        this.id_usuario = id;
+        this.id = id;
     }
 
     public String getNombre() {
@@ -89,11 +89,11 @@ public class UsuarioEntity implements Serializable {
     }
 
     public String getLogin() {
-        return username;
+        return login;
     }
 
     public void setLogin(String login) {
-        this.username = login;
+        this.login = login;
     }
 
     public String getPassword() {

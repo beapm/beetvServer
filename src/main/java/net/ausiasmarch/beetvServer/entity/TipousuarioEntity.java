@@ -24,8 +24,8 @@ public class TipousuarioEntity implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tipousuario")
-    private Long id_tipousuario;
+    @Column(name = "id")
+    private Long id;
     private String nombre;
     
     @OneToMany(fetch=FetchType.LAZY,mappedBy="tipousuario", cascade={CascadeType.REFRESH})
@@ -36,15 +36,15 @@ public class TipousuarioEntity implements Serializable {
     }
 
     public TipousuarioEntity(Long id_tipousuario) {
-        this.id_tipousuario = id_tipousuario;
+        this.id = id_tipousuario;
     }
     
     public Long getId() {
-        return id_tipousuario;
+        return id;
     }
 
     public void setId(Long id_tipousuario) {
-        this.id_tipousuario = id_tipousuario;
+        this.id = id_tipousuario;
     }
 
     public String getNombre() {

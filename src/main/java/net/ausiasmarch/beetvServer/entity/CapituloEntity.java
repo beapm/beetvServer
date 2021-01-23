@@ -5,20 +5,87 @@
  */
 package net.ausiasmarch.beetvServer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-/**
- *
- * @author beapm
- */
-public class CapituloEntity {
+@Entity
+@Table(name = "capitulo")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+public class CapituloEntity implements Serializable {
     
-    private Long id_capitulo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
     private String nombre;
     private String sinopsis_capitulo;
     private LocalDateTime fecha_emision;
     private int duracion;
     private Long id_temporada;
     private Long id_file;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getSinopsis_capitulo() {
+        return sinopsis_capitulo;
+    }
+
+    public void setSinopsis_capitulo(String sinopsis_capitulo) {
+        this.sinopsis_capitulo = sinopsis_capitulo;
+    }
+
+    public LocalDateTime getFecha_emision() {
+        return fecha_emision;
+    }
+
+    public void setFecha_emision(LocalDateTime fecha_emision) {
+        this.fecha_emision = fecha_emision;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+
+    public Long getId_temporada() {
+        return id_temporada;
+    }
+
+    public void setId_temporada(Long id_temporada) {
+        this.id_temporada = id_temporada;
+    }
+
+    public Long getId_file() {
+        return id_file;
+    }
+
+    public void setId_file(Long id_file) {
+        this.id_file = id_file;
+    }
+    
     
 }
