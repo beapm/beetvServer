@@ -95,7 +95,19 @@ public class GeneroController {
 
     @PostMapping("/fill")
     public ResponseEntity<?> fill() {
-        return new ResponseEntity<Long>(oFillService.generoFill(), HttpStatus.OK);
+
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oUsuarioEntity.getTipousuario().getId() == 1) { // admin puede rellenar géneros
+                return new ResponseEntity<Long>(oFillService.generoFill(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+        }
+
     }
 
     @DeleteMapping("/{id}")
@@ -129,12 +141,22 @@ public class GeneroController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody GeneroEntity oGeneroEntity) {
-        oGeneroEntity.setId(id);
-        if (oGeneroRepository.existsById(id)) {
-            return new ResponseEntity<GeneroEntity>(oGeneroRepository.save(oGeneroEntity), HttpStatus.OK);
+
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
+            if (oUsuarioEntity.getTipousuario().getId() == 1) { // admin puede editar géneros
+                oGeneroEntity.setId(id);
+                if (oGeneroRepository.existsById(id)) {
+                    return new ResponseEntity<GeneroEntity>(oGeneroRepository.save(oGeneroEntity), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
+                }
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
         }
     }
-
 }
