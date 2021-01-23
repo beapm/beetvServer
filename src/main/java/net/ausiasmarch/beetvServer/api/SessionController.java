@@ -26,7 +26,7 @@ public class SessionController {
 
     @GetMapping("/")
     public ResponseEntity<?> check() {
-        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("login");
+        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         oSessionUsuarioEntity = oUsuarioRepository.findById(oSessionUsuarioEntity.getId()).get();
         if (oSessionUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
@@ -39,7 +39,7 @@ public class SessionController {
     public ResponseEntity<?> login(@RequestBody UsuarioBean oUsuarioBean) {
         UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByLoginAndPassword(oUsuarioBean.getLogin(), oUsuarioBean.getPassword().toLowerCase());
         if (oUsuarioEntity != null) {
-            oHttpSession.setAttribute("login", oUsuarioEntity);
+            oHttpSession.setAttribute("usuario", oUsuarioEntity);
             return new ResponseEntity<UsuarioEntity>(oUsuarioEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);

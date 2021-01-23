@@ -144,4 +144,14 @@ public class UsuarioEntity implements Serializable {
         this.tipousuario = tipousuario;
     }
 
+    public Long getId_file() {
+        return id_file;
+    }
+
+    public void setId_file(Long id_file) {
+        this.id_file = id_file;
+    }
+    
+    
+
 }
