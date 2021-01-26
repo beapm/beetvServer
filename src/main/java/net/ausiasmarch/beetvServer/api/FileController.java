@@ -31,16 +31,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- *
- * @author beapm
- */
-
 @RestController
 @RequestMapping("/file")
 public class FileController {
-    
-        @Autowired
+
+    @Autowired
     HttpSession oSession;
 
     @Autowired
@@ -64,14 +59,14 @@ public class FileController {
                 return new ResponseEntity<Long>(oFileRepository.save(img2).getId_File(), HttpStatus.OK);
             } else {
                 FileEntity img = new FileEntity(file.getOriginalFilename(), file.getContentType());
-                img.setFile(new javax.sql.rowset.serial.SerialBlob(file.getBytes()));                
+                img.setFile(new javax.sql.rowset.serial.SerialBlob(file.getBytes()));
                 return new ResponseEntity<Long>(oFileRepository.save(img).getId_File(), HttpStatus.OK);
             }
         } catch (IOException ex) {
             return new ResponseEntity<Boolean>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (SQLException ex) {
             return new ResponseEntity<Boolean>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
+        }
     }
 
     public BufferedImage createThumb(BufferedImage in, int w, int h) {
@@ -114,7 +109,7 @@ public class FileController {
             return new ResponseEntity<Boolean>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<?> getImageById(@PathVariable("id") Long id) throws IOException {
         try {
@@ -127,5 +122,5 @@ public class FileController {
             return new ResponseEntity<Boolean>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 }
