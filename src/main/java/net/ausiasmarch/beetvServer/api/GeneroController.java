@@ -73,7 +73,7 @@ public class GeneroController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody GeneroEntity oGeneroEntity) {
+    public ResponseEntity<?> create(@RequestBody GeneroEntity oGeneroEntity) { // solo puede el admin
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
@@ -111,7 +111,8 @@ public class GeneroController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {  // solo puede el admin
+        
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
         if (oUsuarioEntity == null) {
@@ -140,14 +141,14 @@ public class GeneroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody GeneroEntity oGeneroEntity) {
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody GeneroEntity oGeneroEntity) { // solo puede el admin
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) { // admin puede editar géneros
+            if (oUsuarioEntity.getTipousuario().getId() == 1) { 
                 oGeneroEntity.setId(id);
                 if (oGeneroRepository.existsById(id)) {
                     return new ResponseEntity<GeneroEntity>(oGeneroRepository.save(oGeneroEntity), HttpStatus.OK);
