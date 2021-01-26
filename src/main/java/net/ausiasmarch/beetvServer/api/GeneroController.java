@@ -112,7 +112,7 @@ public class GeneroController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {  // solo puede el admin
-        
+
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
         if (oUsuarioEntity == null) {
@@ -148,9 +148,9 @@ public class GeneroController {
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) { 
-                oGeneroEntity.setId(id);
+            if (oUsuarioEntity.getTipousuario().getId() == 1) {
                 if (oGeneroRepository.existsById(id)) {
+                    oGeneroEntity.setId(id);
                     return new ResponseEntity<GeneroEntity>(oGeneroRepository.save(oGeneroEntity), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
