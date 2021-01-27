@@ -8,11 +8,15 @@ package net.ausiasmarch.beetvServer.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,7 +28,11 @@ public class TemporadaEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private Long id_serie;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_serie")
+    private SerieEntity serie;
+    
     private LocalDateTime fecha_inicio;
     private LocalDateTime fecha_fin;
     private Long id_file;
@@ -37,12 +45,12 @@ public class TemporadaEntity implements Serializable {
         this.id = id;
     }
 
-    public Long getId_serie() {
-        return id_serie;
+    public SerieEntity getSerie() {
+        return serie;
     }
 
-    public void setId_serie(Long id_serie) {
-        this.id_serie = id_serie;
+    public void setSerie(SerieEntity serie) {
+        this.serie = serie;
     }
 
     public LocalDateTime getFecha_inicio() {

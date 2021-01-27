@@ -8,6 +8,8 @@ package net.ausiasmarch.beetvServer.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -38,6 +41,9 @@ public class SerieEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "id_genero")
     private GeneroEntity genero;
+    
+    @OneToMany(fetch=FetchType.LAZY,mappedBy="serie", cascade={CascadeType.REFRESH})
+    private List<TemporadaEntity> temporadas = new ArrayList<>();
     
     private Long id_file;
 
@@ -113,4 +119,7 @@ public class SerieEntity implements Serializable {
         this.id_file = id_file;
     }
 
+     public int getTemporadas() {
+        return temporadas.size();
+    }
 }
