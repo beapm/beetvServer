@@ -8,19 +8,23 @@ package net.ausiasmarch.beetvServer.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "serie")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SerieEntity implements Serializable {
-    
-        @Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
@@ -30,7 +34,11 @@ public class SerieEntity implements Serializable {
     private int duracion_media;
     private LocalDateTime fecha_inicio;
     private LocalDateTime fecha_fin;
-    private Long id_genero;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_genero")
+    private GeneroEntity genero;
+    
     private Long id_file;
 
     public Long getId() {
@@ -89,12 +97,12 @@ public class SerieEntity implements Serializable {
         this.fecha_fin = fecha_fin;
     }
 
-    public Long getId_genero() {
-        return id_genero;
+    public GeneroEntity getGenero() {
+        return genero;
     }
 
-    public void setId_genero(Long id_genero) {
-        this.id_genero = id_genero;
+    public void setGenero(GeneroEntity genero) {
+        this.genero = genero;
     }
 
     public Long getId_file() {
@@ -104,6 +112,5 @@ public class SerieEntity implements Serializable {
     public void setId_file(Long id_file) {
         this.id_file = id_file;
     }
-    
-    
+
 }
