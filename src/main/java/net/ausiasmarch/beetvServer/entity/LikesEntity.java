@@ -7,11 +7,15 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,8 +28,14 @@ public class LikesEntity implements Serializable {
     @Column(name = "id")
     private Long id;
     private Boolean like_type;
-    private Long id_usuario;
-    private Long id_comentario;
+    
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuario;
+    
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_comentario")
+    private ComentarioEntity comentario;
 
     public Long getId() {
         return id;
@@ -43,21 +53,20 @@ public class LikesEntity implements Serializable {
         this.like_type = like_type;
     }
 
-    public Long getId_usuario() {
-        return id_usuario;
+    public UsuarioEntity getUsuario() {
+        return usuario;
     }
 
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
     }
 
-    public Long getId_comentario() {
-        return id_comentario;
+    public ComentarioEntity getComentario() {
+        return comentario;
     }
 
-    public void setId_comentario(Long id_comentario) {
-        this.id_comentario = id_comentario;
+    public void setComentario(ComentarioEntity comentario) {
+        this.comentario = comentario;
     }
-    
     
 }

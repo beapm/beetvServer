@@ -7,6 +7,8 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -36,6 +39,9 @@ public class ComentarioEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "id_capitulo")
     private CapituloEntity capitulo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
+    private List<LikesEntity> likes = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -69,4 +75,7 @@ public class ComentarioEntity implements Serializable {
         this.capitulo = capitulo;
     }
 
+    public int getLikes() {
+        return likes.size();
+    }
 }
