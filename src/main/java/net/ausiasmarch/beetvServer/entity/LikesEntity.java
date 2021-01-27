@@ -23,7 +23,7 @@ public class LikesEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private boolean like;
+    private Boolean like_type;
     private Long id_usuario;
     private Long id_comentario;
 
@@ -35,12 +35,12 @@ public class LikesEntity implements Serializable {
         this.id = id;
     }
 
-    public boolean isLike() {
-        return like;
+    public Boolean getLike_type() {
+        return like_type;
     }
 
-    public void setLike(boolean like) {
-        this.like = like;
+    public void setLike_type(Boolean like_type) {
+        this.like_type = like_type;
     }
 
     public Long getId_usuario() {
