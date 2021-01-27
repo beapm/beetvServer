@@ -8,18 +8,22 @@ package net.ausiasmarch.beetvServer.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "capitulo")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CapituloEntity implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -28,7 +32,10 @@ public class CapituloEntity implements Serializable {
     private String sinopsis_capitulo;
     private LocalDateTime fecha_emision;
     private int duracion;
-    private Long id_temporada;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_temporada")
+    private TemporadaEntity temporada;
     private Long id_file;
 
     public Long getId() {
@@ -71,12 +78,12 @@ public class CapituloEntity implements Serializable {
         this.duracion = duracion;
     }
 
-    public Long getId_temporada() {
-        return id_temporada;
+    public TemporadaEntity getTemporada() {
+        return temporada;
     }
 
-    public void setId_temporada(Long id_temporada) {
-        this.id_temporada = id_temporada;
+    public void setTemporada(TemporadaEntity temporada) {
+        this.temporada = temporada;
     }
 
     public Long getId_file() {
@@ -86,6 +93,5 @@ public class CapituloEntity implements Serializable {
     public void setId_file(Long id_file) {
         this.id_file = id_file;
     }
-    
-    
+
 }
