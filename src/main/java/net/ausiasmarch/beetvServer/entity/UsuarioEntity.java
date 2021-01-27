@@ -3,6 +3,8 @@ package net.ausiasmarch.beetvServer.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -30,23 +33,26 @@ public class UsuarioEntity implements Serializable {
     private String apellido2;
     private String email;
     private String login;
-    
+
     @JsonIgnore
     private String password;
-   
+
     @JsonIgnore
     private String token;
-    
+
     @JsonIgnore
     private boolean validado;
-    
+
     @JsonIgnore
     private boolean activo;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH})
-    @JoinColumn(name="id_tipousuario")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_tipousuario")
     private TipousuarioEntity tipousuario;
-    
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
+    private List<ComentarioEntity> comentarios = new ArrayList<>();
+
     private Long id_file;
 
     public UsuarioEntity() {
@@ -151,7 +157,8 @@ public class UsuarioEntity implements Serializable {
     public void setId_file(Long id_file) {
         this.id_file = id_file;
     }
-    
-    
 
+    public int getComentarios() {
+        return comentarios.size();
+    }
 }

@@ -7,11 +7,15 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,8 +28,14 @@ public class ComentarioEntity implements Serializable {
     @Column(name = "id")
     private Long id;
     private String texto;
-    private Long id_usuario;
-    private Long id_capitulo;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuario;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_capitulo")
+    private CapituloEntity capitulo;
 
     public Long getId() {
         return id;
@@ -43,20 +53,20 @@ public class ComentarioEntity implements Serializable {
         this.texto = texto;
     }
 
-    public Long getId_usuario() {
-        return id_usuario;
+    public UsuarioEntity getUsuario() {
+        return usuario;
     }
 
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
     }
 
-    public Long getId_capitulo() {
-        return id_capitulo;
+    public CapituloEntity getCapitulo() {
+        return capitulo;
     }
 
-    public void setId_capitulo(Long id_capitulo) {
-        this.id_capitulo = id_capitulo;
+    public void setCapitulo(CapituloEntity capitulo) {
+        this.capitulo = capitulo;
     }
 
 }
