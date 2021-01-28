@@ -56,6 +56,9 @@ public class UsuarioEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
     private List<LikesEntity> likes = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
+    private List<ListaseriesEntity> listas = new ArrayList<>();
+
     private Long id_file;
 
     public UsuarioEntity() {
@@ -167,5 +170,9 @@ public class UsuarioEntity implements Serializable {
 
     public int getLikes() {
         return likes.size();
+    }
+
+    public int getListaseries() {
+        return listas.size();
     }
 }

@@ -7,24 +7,35 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "listaseries")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ListaseriesEntity implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id; 
-    private Long id_usuario;
-    private Long id_serie;
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuario;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_serie")
+    private SerieEntity serie;
+    
     private boolean siguiendo;
 
     public Long getId() {
@@ -35,20 +46,20 @@ public class ListaseriesEntity implements Serializable {
         this.id = id;
     }
 
-    public Long getId_usuario() {
-        return id_usuario;
+    public UsuarioEntity getUsuario() {
+        return usuario;
     }
 
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
     }
 
-    public Long getId_serie() {
-        return id_serie;
+    public SerieEntity getSerie() {
+        return serie;
     }
 
-    public void setId_serie(Long id_serie) {
-        this.id_serie = id_serie;
+    public void setSerie(SerieEntity serie) {
+        this.serie = serie;
     }
 
     public boolean isSiguiendo() {
@@ -58,7 +69,5 @@ public class ListaseriesEntity implements Serializable {
     public void setSiguiendo(boolean siguiendo) {
         this.siguiendo = siguiendo;
     }
-    
-    
-            
+
 }

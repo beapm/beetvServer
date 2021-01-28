@@ -45,6 +45,9 @@ public class SerieEntity implements Serializable {
     @OneToMany(fetch=FetchType.LAZY,mappedBy="serie", cascade={CascadeType.REFRESH})
     private List<TemporadaEntity> temporadas = new ArrayList<>();
     
+    @OneToMany(fetch=FetchType.LAZY,mappedBy="serie", cascade={CascadeType.REFRESH})
+    private List<ListaseriesEntity> listas = new ArrayList<>();
+    
     private Long id_file;
 
     public Long getId() {
@@ -121,5 +124,9 @@ public class SerieEntity implements Serializable {
 
      public int getTemporadas() {
         return temporadas.size();
+    }
+
+     public int getListas() {
+        return listas.size();
     }
 }
