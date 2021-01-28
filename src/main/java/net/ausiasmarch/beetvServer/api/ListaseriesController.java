@@ -67,7 +67,7 @@ public class ListaseriesController {
                 }
             } else {  //usuario registrado
                 oListaseriesEntity = oListaseriesRepository.getOne(id);
-                if (oListaseriesEntity.getId_usuario().equals(oUsuarioEntity.getId())) {  // id_usuario coincide con el id del usuario que tiene la sesión activa
+                if (oListaseriesEntity.getUsuario().getId().equals(oUsuarioEntity.getId())) {  // id_usuario coincide con el id del usuario que tiene la sesión activa
                     return new ResponseEntity<ListaseriesEntity>(oListaseriesRepository.getOne(id), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
