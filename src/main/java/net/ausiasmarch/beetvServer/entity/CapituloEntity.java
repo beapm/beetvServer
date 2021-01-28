@@ -44,6 +44,9 @@ public class CapituloEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
     private List<ComentarioEntity> comentarios = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "capitulo", cascade = {CascadeType.REFRESH})
+    private List<ActuacionEntity> actuaciones = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -102,5 +105,9 @@ public class CapituloEntity implements Serializable {
 
     public int getComentarios() {
         return comentarios.size();
+    }
+
+    public int getActuaciones() {
+        return actuaciones.size();
     }
 }

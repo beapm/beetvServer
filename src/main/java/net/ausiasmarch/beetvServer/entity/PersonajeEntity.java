@@ -7,11 +7,16 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,6 +33,9 @@ public class PersonajeEntity implements Serializable {
     private String apellido2;
     private Long id_file;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personaje", cascade = {CascadeType.REFRESH})
+    private List<ActuacionEntity> actuaciones = new ArrayList<>();
+    
     public Long getId() {
         return id;
     }
@@ -68,4 +76,7 @@ public class PersonajeEntity implements Serializable {
         this.id_file = id_file;
     }
 
+    public int getActuaciones() {
+        return actuaciones.size();
+    }
 }

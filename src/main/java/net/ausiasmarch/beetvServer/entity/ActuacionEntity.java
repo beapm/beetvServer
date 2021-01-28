@@ -7,24 +7,34 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "actuacion")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ActuacionEntity implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private Long id_capitulo;
-    private Long id_personaje;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_capitulo")
+    private CapituloEntity capitulo;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_personaje")
+    private PersonajeEntity personaje;
 
     public Long getId() {
         return id;
@@ -34,21 +44,19 @@ public class ActuacionEntity implements Serializable {
         this.id = id;
     }
 
-    public Long getId_capitulo() {
-        return id_capitulo;
+    public CapituloEntity getCapitulo() {
+        return capitulo;
     }
 
-    public void setId_capitulo(Long id_capitulo) {
-        this.id_capitulo = id_capitulo;
+    public void setCapitulo(CapituloEntity capitulo) {
+        this.capitulo = capitulo;
     }
 
-    public Long getId_personaje() {
-        return id_personaje;
+    public PersonajeEntity getPersonaje() {
+        return personaje;
     }
 
-    public void setId_personaje(Long id_personaje) {
-        this.id_personaje = id_personaje;
+    public void setPersonaje(PersonajeEntity personaje) {
+        this.personaje = personaje;
     }
-    
-    
 }
