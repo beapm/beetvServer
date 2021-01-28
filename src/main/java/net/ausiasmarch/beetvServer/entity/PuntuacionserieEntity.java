@@ -7,11 +7,15 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,8 +28,14 @@ public class PuntuacionserieEntity implements Serializable {
     @Column(name = "id")
     private Long id;
     private int puntuacion;
-    private Long id_serie;
-    private Long id_usuario;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_serie")
+    private SerieEntity serie;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuario;
 
     public Long getId() {
         return id;
@@ -43,20 +53,20 @@ public class PuntuacionserieEntity implements Serializable {
         this.puntuacion = puntuacion;
     }
 
-    public Long getId_serie() {
-        return id_serie;
+    public SerieEntity getSerie() {
+        return serie;
     }
 
-    public void setId_serie(Long id_serie) {
-        this.id_serie = id_serie;
+    public void setSerie(SerieEntity serie) {
+        this.serie = serie;
     }
 
-    public Long getId_usuario() {
-        return id_usuario;
+    public UsuarioEntity getUsuario() {
+        return usuario;
     }
 
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
     }
 
 }

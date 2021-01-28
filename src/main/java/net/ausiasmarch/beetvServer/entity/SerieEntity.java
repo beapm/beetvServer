@@ -41,13 +41,16 @@ public class SerieEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "id_genero")
     private GeneroEntity genero;
-    
-    @OneToMany(fetch=FetchType.LAZY,mappedBy="serie", cascade={CascadeType.REFRESH})
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "serie", cascade = {CascadeType.REFRESH})
     private List<TemporadaEntity> temporadas = new ArrayList<>();
-    
-    @OneToMany(fetch=FetchType.LAZY,mappedBy="serie", cascade={CascadeType.REFRESH})
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "serie", cascade = {CascadeType.REFRESH})
     private List<ListaseriesEntity> listas = new ArrayList<>();
-    
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "serie", cascade = {CascadeType.REFRESH})
+    private List<PuntuacionserieEntity> puntuaciones = new ArrayList<>();
+
     private Long id_file;
 
     public Long getId() {
@@ -122,11 +125,15 @@ public class SerieEntity implements Serializable {
         this.id_file = id_file;
     }
 
-     public int getTemporadas() {
+    public int getTemporadas() {
         return temporadas.size();
     }
 
-     public int getListas() {
+    public int getListas() {
         return listas.size();
+    }
+
+    public int getPuntuaciones() {
+        return puntuaciones.size();
     }
 }
