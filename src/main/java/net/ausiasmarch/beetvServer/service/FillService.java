@@ -385,8 +385,8 @@ public class FillService {
         for (int i = 1; i <= cantidad; i++) {
             PuntuacionserieEntity oPuntuacionserieEntity = new PuntuacionserieEntity();
 
-            oPuntuacionserieEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
-            oPuntuacionserieEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
+        //    oPuntuacionserieEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
+        //    oPuntuacionserieEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
             oPuntuacionserieEntity.setPuntuacion(RandomHelper.getRandomInt(1, 5));
 
             oPuntuacionserieRepository.save(oPuntuacionserieEntity);
@@ -435,8 +435,8 @@ public class FillService {
         for (int i = 1; i <= cantidad; i++) {
             ListaseriesEntity oListaseriesEntity = new ListaseriesEntity();
 
-            oListaseriesEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
-            oListaseriesEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 301)));
+        //    oListaseriesEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
+        //    oListaseriesEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 301)));
 
             Random rand = new Random(); // para obtener un booleano aleatorio
             Boolean value = rand.nextBoolean();
