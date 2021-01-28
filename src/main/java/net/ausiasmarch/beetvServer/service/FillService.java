@@ -8,6 +8,7 @@ import net.ausiasmarch.beetvServer.entity.CapituloEntity;
 import net.ausiasmarch.beetvServer.entity.ComentarioEntity;
 import net.ausiasmarch.beetvServer.entity.GeneroEntity;
 import net.ausiasmarch.beetvServer.entity.LikesEntity;
+import net.ausiasmarch.beetvServer.entity.ListaseriesEntity;
 import net.ausiasmarch.beetvServer.entity.PersonajeEntity;
 import net.ausiasmarch.beetvServer.entity.PuntuacionserieEntity;
 import net.ausiasmarch.beetvServer.entity.TemporadaEntity;
@@ -19,6 +20,7 @@ import net.ausiasmarch.beetvServer.repository.CapituloRepository;
 import net.ausiasmarch.beetvServer.repository.ComentarioRepository;
 import net.ausiasmarch.beetvServer.repository.GeneroRepository;
 import net.ausiasmarch.beetvServer.repository.LikesRepository;
+import net.ausiasmarch.beetvServer.repository.ListaseriesRepository;
 import net.ausiasmarch.beetvServer.repository.PersonajeRepository;
 import net.ausiasmarch.beetvServer.repository.PuntuacionserieRepository;
 import net.ausiasmarch.beetvServer.repository.TemporadaRepository;
@@ -59,6 +61,9 @@ public class FillService {
 
     @Autowired
     ComentarioRepository oComentarioRepository;
+
+    @Autowired
+    ListaseriesRepository oListaseriesRepository;
 
     public Long tipousuarioFill() {
 
@@ -153,7 +158,7 @@ public class FillService {
 
             oTemporadaEntity.setFecha_inicio(RandomHelper.getRadomDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             oTemporadaEntity.setFecha_fin(RandomHelper.getRadomDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-        //    oTemporadaEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 15)));
+            //    oTemporadaEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 15)));
             oTemporadaEntity.setId_file(1L);
 
             oTemporadaRepository.save(oTemporadaEntity);
@@ -357,7 +362,7 @@ public class FillService {
             oCapituloEntity.setSinopsis_capitulo(this.getSinopsis01() + this.getSinopsis02() + this.getSinopsis03());
             oCapituloEntity.setFecha_emision(RandomHelper.getRadomDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             oCapituloEntity.setDuracion(RandomHelper.getRandomInt(21, 78));
-        //    oCapituloEntity.setId_temporada(Long.valueOf(RandomHelper.getRandomInt(1, 100)));
+            //    oCapituloEntity.setId_temporada(Long.valueOf(RandomHelper.getRandomInt(1, 100)));
             oCapituloEntity.setId_file(1L);
 
             oCapituloRepository.save(oCapituloEntity);
@@ -369,9 +374,8 @@ public class FillService {
         for (int i = 1; i <= cantidad; i++) {
             ActuacionEntity oActuacionEntity = new ActuacionEntity();
 
-        //    oActuacionEntity.setId_capitulo(Long.valueOf(RandomHelper.getRandomInt(1, 500)));
-        //    oActuacionEntity.setId_personaje(Long.valueOf(RandomHelper.getRandomInt(1, 300)));
-
+            //    oActuacionEntity.setId_capitulo(Long.valueOf(RandomHelper.getRandomInt(1, 500)));
+            //    oActuacionEntity.setId_personaje(Long.valueOf(RandomHelper.getRandomInt(1, 300)));
             oActuacionRepository.save(oActuacionEntity);
         }
         return cantidad;
@@ -395,9 +399,8 @@ public class FillService {
 
             LikesEntity oLikesEntity = new LikesEntity();
 
-        //    oLikesEntity.setId_comentario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
-        //    oLikesEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
-
+            //    oLikesEntity.setId_comentario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
+            //    oLikesEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
             Random rand = new Random(); // para obtener un booleano aleatorio
             Boolean value = rand.nextBoolean();
 
@@ -410,19 +413,37 @@ public class FillService {
 
     public Long comentarioFill(Long cantidad) {
 
-        String[] coments = {"Muy buen capítulo.", "No me ha gustado nada.", "¡Gran final de temporada!", "Me habría gustado que tuviese un poco más de acción...", 
+        String[] coments = {"Muy buen capítulo.", "No me ha gustado nada.", "¡Gran final de temporada!", "Me habría gustado que tuviese un poco más de acción...",
             "¡Ojalá se salve!", "Muy divertido, ¡me he reído mucho!"};
 
         for (int i = 1; i <= cantidad; i++) {
             ComentarioEntity oComentarioEntity = new ComentarioEntity();
 
             String coment = coments[(int) (Math.floor(Math.random() * ((coments.length - 1) - 0 + 1) + 0))];
-            
-           // oComentarioEntity.setId_capitulo(Long.valueOf(RandomHelper.getRandomInt(1, 500)));
-           // oComentarioEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 300)));
+
+            // oComentarioEntity.setId_capitulo(Long.valueOf(RandomHelper.getRandomInt(1, 500)));
+            // oComentarioEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 300)));
             oComentarioEntity.setTexto(coment);
 
             oComentarioRepository.save(oComentarioEntity);
+        }
+        return cantidad;
+    }
+
+    public Long listaseriesFill(Long cantidad) {
+
+        for (int i = 1; i <= cantidad; i++) {
+            ListaseriesEntity oListaseriesEntity = new ListaseriesEntity();
+
+            oListaseriesEntity.setId_serie(cantidad);
+            oListaseriesEntity.setId_usuario(cantidad);
+
+            Random rand = new Random(); // para obtener un booleano aleatorio
+            Boolean value = rand.nextBoolean();
+
+            oListaseriesEntity.setSiguiendo(value);
+
+            oListaseriesRepository.save(oListaseriesEntity);
         }
         return cantidad;
     }
