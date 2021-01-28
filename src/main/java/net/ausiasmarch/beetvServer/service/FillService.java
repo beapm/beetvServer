@@ -435,8 +435,8 @@ public class FillService {
         for (int i = 1; i <= cantidad; i++) {
             ListaseriesEntity oListaseriesEntity = new ListaseriesEntity();
 
-            oListaseriesEntity.setId_serie(cantidad);
-            oListaseriesEntity.setId_usuario(cantidad);
+            oListaseriesEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
+            oListaseriesEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 301)));
 
             Random rand = new Random(); // para obtener un booleano aleatorio
             Boolean value = rand.nextBoolean();
