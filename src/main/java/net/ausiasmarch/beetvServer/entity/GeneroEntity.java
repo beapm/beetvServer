@@ -5,7 +5,9 @@
  */
 package net.ausiasmarch.beetvServer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class GeneroEntity implements Serializable {
     private String nombre;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "genero", cascade = {CascadeType.REFRESH})
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<SerieEntity> series = new ArrayList<>();
 
     public Long getId() {

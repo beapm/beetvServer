@@ -6,6 +6,7 @@
 package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,26 +17,31 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "personaje")
+@Table(name = "lista")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class PersonajeEntity implements Serializable {
+public class ListaEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private String nombre;
-    private String apellido1;
-    private String apellido2;
-    private Long id_file;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personaje", cascade = {CascadeType.REFRESH})
-    private List<ActuacionEntity> actuaciones = new ArrayList<>();
-    
+    private String nombre;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuario;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lista", cascade = {CascadeType.REFRESH})
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<ContenidolistaEntity> contenidos = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -52,31 +58,16 @@ public class PersonajeEntity implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getApellido1() {
-        return apellido1;
+    public UsuarioEntity getUsuario() {
+        return usuario;
     }
 
-    public void setApellido1(String apellido1) {
-        this.apellido1 = apellido1;
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
     }
 
-    public String getApellido2() {
-        return apellido2;
+    public int getContenidos() {
+        return contenidos.size();
     }
 
-    public void setApellido2(String apellido2) {
-        this.apellido2 = apellido2;
-    }
-
-    public Long getId_file() {
-        return id_file;
-    }
-
-    public void setId_file(Long id_file) {
-        this.id_file = id_file;
-    }
-
-    public int getActuaciones() {
-        return actuaciones.size();
-    }
 }

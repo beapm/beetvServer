@@ -1,6 +1,7 @@
 package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class TipousuarioEntity implements Serializable {
     private Long id;
     private String nombre;
     
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch=FetchType.LAZY,mappedBy="tipousuario", cascade={CascadeType.REFRESH})
     private List<UsuarioEntity> usuarios = new ArrayList<>();
     

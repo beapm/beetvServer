@@ -6,6 +6,7 @@
 package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,14 +43,17 @@ public class SerieEntity implements Serializable {
     @JoinColumn(name = "id_genero")
     private GeneroEntity genero;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "serie", cascade = {CascadeType.REFRESH})
     private List<TemporadaEntity> temporadas = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "serie", cascade = {CascadeType.REFRESH})
-    private List<ListaseriesEntity> listas = new ArrayList<>();
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "serie", cascade = {CascadeType.REFRESH})
     private List<PuntuacionserieEntity> puntuaciones = new ArrayList<>();
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "serie", cascade = {CascadeType.REFRESH})
+    private List<ContenidolistaEntity> contenidos = new ArrayList<>();
 
     private Long id_file;
 
@@ -129,11 +133,11 @@ public class SerieEntity implements Serializable {
         return temporadas.size();
     }
 
-    public int getListas() {
-        return listas.size();
-    }
-
     public int getPuntuaciones() {
         return puntuaciones.size();
+    }
+    
+    public int getContenidos() {
+        return contenidos.size();
     }
 }

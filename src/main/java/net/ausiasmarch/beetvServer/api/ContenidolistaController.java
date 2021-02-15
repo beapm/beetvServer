@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.ausiasmarch.beetvServer.api;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import net.ausiasmarch.beetvServer.entity.CapituloEntity;
-import net.ausiasmarch.beetvServer.entity.ComentarioEntity;
+import net.ausiasmarch.beetvServer.entity.ContenidolistaEntity;
 import net.ausiasmarch.beetvServer.entity.UsuarioEntity;
-import net.ausiasmarch.beetvServer.repository.CapituloRepository;
-import net.ausiasmarch.beetvServer.repository.ComentarioRepository;
+import net.ausiasmarch.beetvServer.repository.ContenidolistaRepository;
 import net.ausiasmarch.beetvServer.repository.TipousuarioRepository;
 import net.ausiasmarch.beetvServer.repository.UsuarioRepository;
 import net.ausiasmarch.beetvServer.service.FillService;
@@ -32,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/comentario")
-public class ComentarioController {
+@RequestMapping("/contenidolista")
+public class ContenidolistaController {
 
     @Autowired
     HttpSession oHttpSession;
@@ -45,7 +38,7 @@ public class ComentarioController {
     TipousuarioRepository oTipousuarioRepository;
 
     @Autowired
-    ComentarioRepository oComentarioRepository;
+    ContenidolistaRepository oContenidolistaRepository;
 
     @Autowired
     FillService oFillService;
@@ -53,17 +46,33 @@ public class ComentarioController {
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
 
-        if (oComentarioRepository.existsById(id)) {
-            return new ResponseEntity<ComentarioEntity>(oComentarioRepository.getOne(id), HttpStatus.OK);
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        ContenidolistaEntity oContenidolistaEntity = new ContenidolistaEntity();
+
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<ComentarioEntity>(oComentarioRepository.getOne(id), HttpStatus.NOT_FOUND);
+            if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
+                if (oContenidolistaRepository.existsById(id)) {
+                    return new ResponseEntity<ContenidolistaEntity>(oContenidolistaRepository.getOne(id), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<ContenidolistaEntity>(oContenidolistaRepository.getOne(id), HttpStatus.NOT_FOUND);
+                }
+            } else {  //usuario registrado
+                oContenidolistaEntity = oContenidolistaRepository.getOne(id);
+                if (oContenidolistaEntity.getId().equals(oUsuarioEntity.getId())) {  // id_usuario coincide con el id del usuario que tiene la sesión activa
+                    return new ResponseEntity<ContenidolistaEntity>(oContenidolistaRepository.getOne(id), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+                }
+            }
         }
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
-        if (oComentarioRepository.count() <= 1000) {
-            return new ResponseEntity<List<ComentarioEntity>>(oComentarioRepository.findAll(), HttpStatus.OK);
+        if (oContenidolistaRepository.count() <= 1000) {
+            return new ResponseEntity<List<ContenidolistaEntity>>(oContenidolistaRepository.findAll(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.PAYLOAD_TOO_LARGE);
         }
@@ -71,11 +80,11 @@ public class ComentarioController {
 
     @GetMapping("/count")
     public ResponseEntity<?> count() {
-        return new ResponseEntity<Long>(oComentarioRepository.count(), HttpStatus.OK);
+        return new ResponseEntity<Long>(oContenidolistaRepository.count(), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody ComentarioEntity oComentarioEntity) { // solo puede el admin
+    public ResponseEntity<?> create(@RequestBody ContenidolistaEntity oContenidolistaEntity) { // solo puede el admin
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
@@ -84,8 +93,8 @@ public class ComentarioController {
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
 
-                if (oComentarioEntity.getId() == null) {
-                    return new ResponseEntity<ComentarioEntity>(oComentarioRepository.save(oComentarioEntity), HttpStatus.OK);
+                if (oContenidolistaEntity.getId() == null) {
+                    return new ResponseEntity<ContenidolistaEntity>(oContenidolistaRepository.save(oContenidolistaEntity), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
@@ -96,7 +105,7 @@ public class ComentarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody ComentarioEntity oComentarioEntity) { // solo puede el admin
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody ContenidolistaEntity oContenidolistaEntity) { // solo puede el admin
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
@@ -104,9 +113,9 @@ public class ComentarioController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                oComentarioEntity.setId(id);
-                if (oComentarioRepository.existsById(id)) {
-                    return new ResponseEntity<ComentarioEntity>(oComentarioRepository.save(oComentarioEntity), HttpStatus.OK);
+                oContenidolistaEntity.setId(id);
+                if (oContenidolistaRepository.existsById(id)) {
+                    return new ResponseEntity<ContenidolistaEntity>(oContenidolistaRepository.save(oContenidolistaEntity), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
@@ -125,8 +134,8 @@ public class ComentarioController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                if (oComentarioRepository.existsById(id)) {
-                    oComentarioRepository.deleteById(id);
+                if (oContenidolistaRepository.existsById(id)) {
+                    oContenidolistaRepository.deleteById(id);
                     return new ResponseEntity<Long>(id, HttpStatus.NOT_MODIFIED);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.OK);
@@ -140,8 +149,8 @@ public class ComentarioController {
     @GetMapping("/page")
     public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
 
-        Page<ComentarioEntity> oPage = oComentarioRepository.findAll(oPageable);
-        return new ResponseEntity<Page<ComentarioEntity>>(oPage, HttpStatus.OK);
+        Page<ContenidolistaEntity> oPage = oContenidolistaRepository.findAll(oPageable);
+        return new ResponseEntity<Page<ContenidolistaEntity>>(oPage, HttpStatus.OK);
 
     }
 
@@ -154,11 +163,12 @@ public class ComentarioController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                return new ResponseEntity<Long>(oFillService.comentarioFill(amount), HttpStatus.OK);
+                return new ResponseEntity<Long>(oFillService.contenidolistaFill(amount), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
         }
 
     }
+
 }

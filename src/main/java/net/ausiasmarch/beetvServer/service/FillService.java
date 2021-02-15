@@ -3,31 +3,28 @@ package net.ausiasmarch.beetvServer.service;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.Random;
-import net.ausiasmarch.beetvServer.entity.ActuacionEntity;
 import net.ausiasmarch.beetvServer.entity.CapituloEntity;
-import net.ausiasmarch.beetvServer.entity.ComentarioEntity;
+import net.ausiasmarch.beetvServer.entity.CapitulosvistosEntity;
+import net.ausiasmarch.beetvServer.entity.ContenidolistaEntity;
 import net.ausiasmarch.beetvServer.entity.GeneroEntity;
-import net.ausiasmarch.beetvServer.entity.LikesEntity;
-import net.ausiasmarch.beetvServer.entity.ListaseriesEntity;
-import net.ausiasmarch.beetvServer.entity.PersonajeEntity;
+import net.ausiasmarch.beetvServer.entity.ListaEntity;
 import net.ausiasmarch.beetvServer.entity.PuntuacionserieEntity;
+import net.ausiasmarch.beetvServer.entity.SerieEntity;
 import net.ausiasmarch.beetvServer.entity.TemporadaEntity;
 import net.ausiasmarch.beetvServer.entity.TipousuarioEntity;
 import net.ausiasmarch.beetvServer.entity.UsuarioEntity;
 import net.ausiasmarch.beetvServer.helper.RandomHelper;
-import net.ausiasmarch.beetvServer.repository.ActuacionRepository;
 import net.ausiasmarch.beetvServer.repository.CapituloRepository;
-import net.ausiasmarch.beetvServer.repository.ComentarioRepository;
+import net.ausiasmarch.beetvServer.repository.CapitulosvistosRepository;
+import net.ausiasmarch.beetvServer.repository.ContenidolistaRepository;
 import net.ausiasmarch.beetvServer.repository.GeneroRepository;
-import net.ausiasmarch.beetvServer.repository.LikesRepository;
-import net.ausiasmarch.beetvServer.repository.ListaseriesRepository;
-import net.ausiasmarch.beetvServer.repository.PersonajeRepository;
 import net.ausiasmarch.beetvServer.repository.PuntuacionserieRepository;
 import net.ausiasmarch.beetvServer.repository.TemporadaRepository;
 import net.ausiasmarch.beetvServer.repository.TipousuarioRepository;
 import net.ausiasmarch.beetvServer.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import net.ausiasmarch.beetvServer.repository.ListaRepository;
 
 @Service
 public class FillService {
@@ -48,22 +45,16 @@ public class FillService {
     TemporadaRepository oTemporadaRepository;
 
     @Autowired
-    PersonajeRepository oPersonajeRepository;
-
-    @Autowired
-    ActuacionRepository oActuacionRepository;
-
-    @Autowired
     PuntuacionserieRepository oPuntuacionserieRepository;
 
     @Autowired
-    LikesRepository oLikesRepository;
+    ListaRepository oListaRepository;
 
     @Autowired
-    ComentarioRepository oComentarioRepository;
+    ContenidolistaRepository oContenidolistaRepository;
 
     @Autowired
-    ListaseriesRepository oListaseriesRepository;
+    CapitulosvistosRepository oCapitulosvistosRepository;
 
     public Long tipousuarioFill() {
 
@@ -162,32 +153,6 @@ public class FillService {
             oTemporadaEntity.setId_file(1L);
 
             oTemporadaRepository.save(oTemporadaEntity);
-        }
-        return cantidad;
-    }
-
-    public Long personajeFill(Long cantidad) {
-
-        String[] nombres = {"Samantha", "Flavio", "Claudia", "Cristina", "Meredith", "Paula", "Raquel", "Alex",
-            "Guillermo", "Victoria", "Charles", "Carla", "Carlos", "Anya", "John", "Rachel", "Jennifer",
-            "Pablo", "Richard", "Tom"};
-        String[] apellidos = {"Brooks", "González", "Smith", "Brown", "Taylor", "Pérez", "Sánchez", "García",
-            "Fernández", "Rodríguez", "Cox", "Howard", "Anniston", "Murphy", "Hernández", "Bradford", "Williams",
-            "Díaz", "Navarro", "Vázquez"};
-
-        for (int i = 1; i <= cantidad; i++) {
-
-            PersonajeEntity oPersonajeEntity = new PersonajeEntity();
-
-            String nombre = nombres[(int) (Math.floor(Math.random() * ((nombres.length - 1) - 0 + 1) + 0))];
-            String apellido1 = apellidos[(int) (Math.floor(Math.random() * ((apellidos.length - 1) - 0 + 1) + 0))];
-            String apellido2 = apellidos[(int) (Math.floor(Math.random() * ((apellidos.length - 1) - 0 + 1) + 0))];
-            oPersonajeEntity.setNombre(nombre);
-            oPersonajeEntity.setApellido1(apellido1);
-            oPersonajeEntity.setApellido2(apellido2);
-            oPersonajeEntity.setId_file(1L);
-
-            oPersonajeRepository.save(oPersonajeEntity);
         }
         return cantidad;
     }
@@ -370,23 +335,12 @@ public class FillService {
         return cantidad;
     }
 
-    public Long actuacionFill(Long cantidad) {
-        for (int i = 1; i <= cantidad; i++) {
-            ActuacionEntity oActuacionEntity = new ActuacionEntity();
-
-            //    oActuacionEntity.setId_capitulo(Long.valueOf(RandomHelper.getRandomInt(1, 500)));
-            //    oActuacionEntity.setId_personaje(Long.valueOf(RandomHelper.getRandomInt(1, 300)));
-            oActuacionRepository.save(oActuacionEntity);
-        }
-        return cantidad;
-    }
-
     public Long puntuacionserieFill(Long cantidad) {
         for (int i = 1; i <= cantidad; i++) {
             PuntuacionserieEntity oPuntuacionserieEntity = new PuntuacionserieEntity();
 
-        //    oPuntuacionserieEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
-        //    oPuntuacionserieEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
+            //    oPuntuacionserieEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
+            //    oPuntuacionserieEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
             oPuntuacionserieEntity.setPuntuacion(RandomHelper.getRandomInt(1, 5));
 
             oPuntuacionserieRepository.save(oPuntuacionserieEntity);
@@ -394,56 +348,68 @@ public class FillService {
         return cantidad;
     }
 
-    public Long likesFill(Long cantidad) {
+    public Long listaFill(Long cantidad) {
+
+        String[] nombres = {"Acción", "Aventuras", "Favoritas", "Favs", "Pendientes", "Animación", "Divertidas", "Lista de pendientes",
+            "Lista de favoritas"};
         for (int i = 1; i <= cantidad; i++) {
+            ListaEntity oListaEntity = new ListaEntity();
 
-            LikesEntity oLikesEntity = new LikesEntity();
+            UsuarioEntity oUsuarioEntity = new UsuarioEntity();
+            oUsuarioEntity.setId(Long.valueOf(RandomHelper.getRandomInt(1, 301)));
+            oListaEntity.setUsuario(oUsuarioEntity);
 
-            //    oLikesEntity.setId_comentario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
-            //    oLikesEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 200)));
-            Random rand = new Random(); // para obtener un booleano aleatorio
-            Boolean value = rand.nextBoolean();
+            String nombre = nombres[(int) (Math.floor(Math.random() * ((nombres.length - 1) - 0 + 1) + 0))];
+            oListaEntity.setNombre(nombre);
 
-            oLikesEntity.setLike_type(value);
-
-            oLikesRepository.save(oLikesEntity);
+            oListaRepository.save(oListaEntity);
         }
         return cantidad;
     }
 
-    public Long comentarioFill(Long cantidad) {
-
-        String[] coments = {"Muy buen capítulo.", "No me ha gustado nada.", "¡Gran final de temporada!", "Me habría gustado que tuviese un poco más de acción...",
-            "¡Ojalá se salve!", "Muy divertido, ¡me he reído mucho!"};
+    public Long contenidolistaFill(Long cantidad) {
 
         for (int i = 1; i <= cantidad; i++) {
-            ComentarioEntity oComentarioEntity = new ComentarioEntity();
 
-            String coment = coments[(int) (Math.floor(Math.random() * ((coments.length - 1) - 0 + 1) + 0))];
+            ContenidolistaEntity oContenidolistaEntity = new ContenidolistaEntity();
 
-            // oComentarioEntity.setId_capitulo(Long.valueOf(RandomHelper.getRandomInt(1, 500)));
-            // oComentarioEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 300)));
-            oComentarioEntity.setTexto(coment);
+            ListaEntity oListaseriesEntity = new ListaEntity();
+            oListaseriesEntity.setId(Long.valueOf(RandomHelper.getRandomInt(1, 30)));
+            oContenidolistaEntity.setLista(oListaseriesEntity);
 
-            oComentarioRepository.save(oComentarioEntity);
+            SerieEntity oSerieEntity = new SerieEntity();
+            oSerieEntity.setId(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
+
+            oContenidolistaEntity.setSerie(oSerieEntity);
+
+            Random rand = new Random(); // para obtener un booleano aleatorio
+            Boolean value = rand.nextBoolean();
+            oContenidolistaEntity.setSiguiendo(value);
+
+            oContenidolistaRepository.save(oContenidolistaEntity);
         }
         return cantidad;
     }
 
-    public Long listaseriesFill(Long cantidad) {
+    public Long capitulosvistosFill(Long cantidad) {
 
         for (int i = 1; i <= cantidad; i++) {
-            ListaseriesEntity oListaseriesEntity = new ListaseriesEntity();
 
-        //    oListaseriesEntity.setId_serie(Long.valueOf(RandomHelper.getRandomInt(1, 20)));
-        //    oListaseriesEntity.setId_usuario(Long.valueOf(RandomHelper.getRandomInt(1, 301)));
+            CapitulosvistosEntity oCapitulosvistosEntity = new CapitulosvistosEntity();
+
+            CapituloEntity oCapituloEntity = new CapituloEntity();
+            oCapituloEntity.setId(Long.valueOf(RandomHelper.getRandomInt(1, 500)));
+            oCapitulosvistosEntity.setCapitulo(oCapituloEntity);
+
+            UsuarioEntity oUsuarioEntity = new UsuarioEntity();
+            oUsuarioEntity.setId(Long.valueOf(RandomHelper.getRandomInt(2, 300)));
+            oCapitulosvistosEntity.setUsuario(oUsuarioEntity);
 
             Random rand = new Random(); // para obtener un booleano aleatorio
             Boolean value = rand.nextBoolean();
+            oCapitulosvistosEntity.setVisto(value);
 
-            oListaseriesEntity.setSiguiendo(value);
-
-            oListaseriesRepository.save(oListaseriesEntity);
+            oCapitulosvistosRepository.save(oCapitulosvistosEntity);
         }
         return cantidad;
     }

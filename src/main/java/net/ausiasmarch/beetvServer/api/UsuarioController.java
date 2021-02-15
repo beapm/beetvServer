@@ -1,4 +1,3 @@
-
 package net.ausiasmarch.beetvServer.api;
 
 import java.util.List;
@@ -34,10 +33,10 @@ public class UsuarioController {
 
     @Autowired
     UsuarioRepository oUsuarioRepository;
-    
+
     @Autowired
     TipousuarioRepository oTipousuarioRepository;
-    
+
     @Autowired
     FillService oFillService;
 
@@ -62,7 +61,6 @@ public class UsuarioController {
                     return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
                 }
             }
-
         }
     }
 
@@ -88,21 +86,9 @@ public class UsuarioController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody UsuarioEntity oUsuarioEntity) {     
-            
-        if (oUsuarioEntity == null){
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        }else{            
-            if(oUsuarioEntity.getTipousuario().getId()==1) {
-                if (oUsuarioEntity.getId() == null) {
-                    return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUsuarioEntity), HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-                } 
-            }else{
-               return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-            }           
-        }
+    public ResponseEntity<?> create(@RequestBody UsuarioEntity oUsuarioEntity) {
+
+        return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUsuarioEntity), HttpStatus.OK);
     }
 
     @GetMapping("/count")
@@ -112,15 +98,15 @@ public class UsuarioController {
 
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-            
+
         } else {
-            
+
             if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
-                
+
                 return new ResponseEntity<Long>(oUsuarioRepository.count(), HttpStatus.OK);
 
             } else {  //cliente
-                
+
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
         }
@@ -128,17 +114,17 @@ public class UsuarioController {
 
     @PostMapping("/fill/{amount}")
     public ResponseEntity<?> fill(@PathVariable(value = "amount") Long amount) {
-        
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");     
-            if (oUsuarioEntity == null) {
-                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-            }else{
-                 if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                    return new ResponseEntity<Long>(oFillService.usuarioFill(amount), HttpStatus.OK);
-                }else{
-                    return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-                }
-            }   
+
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oUsuarioEntity.getTipousuario().getId() == 1) {
+                return new ResponseEntity<Long>(oFillService.usuarioFill(amount), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -164,7 +150,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody UsuarioEntity oUsuarioEntity) {
- 
+
         UsuarioEntity oUsuarioEntity2 = (UsuarioEntity) oHttpSession.getAttribute("usuario"); // para ver si ingresas como admin o cliente
 
         if (oUsuarioEntity2 == null) {
@@ -200,7 +186,7 @@ public class UsuarioController {
     public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Direction.ASC) Pageable oPageable) {
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        
+
         Page<UsuarioEntity> oPage = oUsuarioRepository.findAll(oPageable);
 
         if (oUsuarioEntity == null) {
@@ -211,10 +197,10 @@ public class UsuarioController {
             } else {  //cliente
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
-            
+
         }
     }
-    
+
     @GetMapping("/page/tipousuario/{id}")
     public ResponseEntity<?> getPageXTipousuario(@PageableDefault(page = 0, size = 10, direction = Direction.ASC) Pageable oPageable, @PathVariable(value = "id") Long id) {
 

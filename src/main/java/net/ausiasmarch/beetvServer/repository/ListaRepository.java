@@ -5,7 +5,7 @@
  */
 package net.ausiasmarch.beetvServer.repository;
 
-import net.ausiasmarch.beetvServer.entity.PersonajeEntity;
+import net.ausiasmarch.beetvServer.entity.ListaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface PersonajeRepository extends JpaRepository<PersonajeEntity, Long>  {
+public interface ListaRepository extends JpaRepository<ListaEntity, Long>  {
     
 }

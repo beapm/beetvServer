@@ -25,18 +25,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `actuacion`
---
-
-CREATE TABLE `actuacion` (
-  `id` bigint(11) NOT NULL,
-  `id_capitulo` bigint(11) NOT NULL,
-  `id_personaje` bigint(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `capitulo`
 --
 
@@ -48,19 +36,6 @@ CREATE TABLE `capitulo` (
   `duracion` int(11) DEFAULT NULL,
   `id_temporada` bigint(11) NOT NULL,
   `id_file` bigint(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `comentario`
---
-
-CREATE TABLE `comentario` (
-  `id` bigint(11) NOT NULL,
-  `texto` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `id_usuario` bigint(11) NOT NULL,
-  `id_capitulo` bigint(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -97,19 +72,6 @@ CREATE TABLE `genero` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `likes`
---
-
-CREATE TABLE `likes` (
-  `id` bigint(11) NOT NULL,
-  `like_type` tinyint(1) DEFAULT NULL,
-  `id_usuario` bigint(11) NOT NULL,
-  `id_comentario` bigint(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `listaseries`
 --
 
@@ -118,20 +80,6 @@ CREATE TABLE `listaseries` (
   `id_usuario` bigint(11) NOT NULL,
   `id_serie` bigint(11) NOT NULL,
   `siguiendo` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `personaje`
---
-
-CREATE TABLE `personaje` (
-  `id` bigint(11) NOT NULL,
-  `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `apellido1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `apellido2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `id_file` bigint(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

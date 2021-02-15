@@ -2,6 +2,7 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,17 +51,17 @@ public class UsuarioEntity implements Serializable {
     @JoinColumn(name = "id_tipousuario")
     private TipousuarioEntity tipousuario;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
-    private List<ComentarioEntity> comentarios = new ArrayList<>();
+    private List<ListaEntity> listas = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
-    private List<LikesEntity> likes = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
-    private List<ListaseriesEntity> listas = new ArrayList<>();
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
     private List<PuntuacionserieEntity> puntuaciones = new ArrayList<>();
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
+    private List<CapitulosvistosEntity> capitulosvistos = new ArrayList<>();
 
     private Long id_file;
 
@@ -167,19 +168,15 @@ public class UsuarioEntity implements Serializable {
         this.id_file = id_file;
     }
 
-    public int getComentarios() {
-        return comentarios.size();
-    }
-
-    public int getLikes() {
-        return likes.size();
-    }
-
-    public int getListaseries() {
+    public int getListas() {
         return listas.size();
     }
 
     public int getPuntuaciones() {
         return puntuaciones.size();
+    }
+
+    public int getCapitulosvistos() {
+        return capitulosvistos.size();
     }
 }

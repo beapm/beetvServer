@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.ausiasmarch.beetvServer.api;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import net.ausiasmarch.beetvServer.entity.ActuacionEntity;
+import net.ausiasmarch.beetvServer.entity.CapitulosvistosEntity;
+import net.ausiasmarch.beetvServer.entity.ContenidolistaEntity;
 import net.ausiasmarch.beetvServer.entity.UsuarioEntity;
-import net.ausiasmarch.beetvServer.repository.ActuacionRepository;
+import net.ausiasmarch.beetvServer.repository.CapitulosvistosRepository;
 import net.ausiasmarch.beetvServer.repository.TipousuarioRepository;
 import net.ausiasmarch.beetvServer.repository.UsuarioRepository;
 import net.ausiasmarch.beetvServer.service.FillService;
@@ -30,10 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/actuacion")
-public class ActuacionController {
+@RequestMapping("/capitulosvistos")
+public class CapitulosvistosController {
     
-@Autowired
+    @Autowired
     HttpSession oHttpSession;
 
     @Autowired
@@ -43,26 +39,42 @@ public class ActuacionController {
     TipousuarioRepository oTipousuarioRepository;
 
     @Autowired
-    ActuacionRepository oActuacionRepository;
+    CapitulosvistosRepository oCapitulosvistosRepository;
 
     @Autowired
     FillService oFillService;
-
     
-    @GetMapping("/{id}")
+    
+     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
 
-        if (oActuacionRepository.existsById(id)) {
-            return new ResponseEntity<ActuacionEntity>(oActuacionRepository.getOne(id), HttpStatus.OK);
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        CapitulosvistosEntity oCapitulosvistosEntity = new CapitulosvistosEntity();
+
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<ActuacionEntity>(oActuacionRepository.getOne(id), HttpStatus.NOT_FOUND);
+            if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
+                if (oCapitulosvistosRepository.existsById(id)) {
+                    return new ResponseEntity<CapitulosvistosEntity>(oCapitulosvistosRepository.getOne(id), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<CapitulosvistosEntity>(oCapitulosvistosRepository.getOne(id), HttpStatus.NOT_FOUND);
+                }
+            } else {  //usuario registrado
+                oCapitulosvistosEntity = oCapitulosvistosRepository.getOne(id);
+                if (oCapitulosvistosEntity.getId().equals(oUsuarioEntity.getId())) {  // id_usuario coincide con el id del usuario que tiene la sesión activa
+                    return new ResponseEntity<CapitulosvistosEntity>(oCapitulosvistosRepository.getOne(id), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+                }
+            }
         }
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
-        if (oActuacionRepository.count() <= 1000) {
-            return new ResponseEntity<List<ActuacionEntity>>(oActuacionRepository.findAll(), HttpStatus.OK);
+        if (oCapitulosvistosRepository.count() <= 1000) {
+            return new ResponseEntity<List<CapitulosvistosEntity>>(oCapitulosvistosRepository.findAll(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.PAYLOAD_TOO_LARGE);
         }
@@ -70,11 +82,11 @@ public class ActuacionController {
 
     @GetMapping("/count")
     public ResponseEntity<?> count() {
-        return new ResponseEntity<Long>(oActuacionRepository.count(), HttpStatus.OK);
+        return new ResponseEntity<Long>(oCapitulosvistosRepository.count(), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody ActuacionEntity oActuacionEntity) { // solo puede el admin
+    public ResponseEntity<?> create(@RequestBody CapitulosvistosEntity oCapitulosvistosEntity) { // solo puede el admin
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
@@ -83,8 +95,8 @@ public class ActuacionController {
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
 
-                if (oActuacionEntity.getId() == null) {
-                    return new ResponseEntity<ActuacionEntity>(oActuacionRepository.save(oActuacionEntity), HttpStatus.OK);
+                if (oCapitulosvistosEntity.getId() == null) {
+                    return new ResponseEntity<CapitulosvistosEntity>(oCapitulosvistosRepository.save(oCapitulosvistosEntity), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
@@ -95,7 +107,7 @@ public class ActuacionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody ActuacionEntity oActuacionEntity) { // solo puede el admin
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody CapitulosvistosEntity oCapitulosvistosEntity) { // solo puede el admin
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
@@ -103,9 +115,9 @@ public class ActuacionController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                oActuacionEntity.setId(id);
-                if (oActuacionRepository.existsById(id)) {
-                    return new ResponseEntity<ActuacionEntity>(oActuacionRepository.save(oActuacionEntity), HttpStatus.OK);
+                oCapitulosvistosEntity.setId(id);
+                if (oCapitulosvistosRepository.existsById(id)) {
+                    return new ResponseEntity<CapitulosvistosEntity>(oCapitulosvistosRepository.save(oCapitulosvistosEntity), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
@@ -124,8 +136,8 @@ public class ActuacionController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                if (oActuacionRepository.existsById(id)) {
-                    oActuacionRepository.deleteById(id);
+                if (oCapitulosvistosRepository.existsById(id)) {
+                    oCapitulosvistosRepository.deleteById(id);
                     return new ResponseEntity<Long>(id, HttpStatus.NOT_MODIFIED);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.OK);
@@ -139,8 +151,8 @@ public class ActuacionController {
     @GetMapping("/page")
     public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
 
-        Page<ActuacionEntity> oPage = oActuacionRepository.findAll(oPageable);
-        return new ResponseEntity<Page<ActuacionEntity>>(oPage, HttpStatus.OK);
+        Page<CapitulosvistosEntity> oPage = oCapitulosvistosRepository.findAll(oPageable);
+        return new ResponseEntity<Page<CapitulosvistosEntity>>(oPage, HttpStatus.OK);
 
     }
 
@@ -152,13 +164,13 @@ public class ActuacionController {
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) { 
-                return new ResponseEntity<Long>(oFillService.actuacionFill(amount), HttpStatus.OK);
+            if (oUsuarioEntity.getTipousuario().getId() == 1) {
+                return new ResponseEntity<Long>(oFillService.capitulosvistosFill(amount), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
         }
 
     }
-    
+
 }

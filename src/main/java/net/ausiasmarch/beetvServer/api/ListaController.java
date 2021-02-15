@@ -1,17 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.ausiasmarch.beetvServer.api;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import net.ausiasmarch.beetvServer.entity.LikesEntity;
-import net.ausiasmarch.beetvServer.entity.ListaseriesEntity;
+import net.ausiasmarch.beetvServer.entity.ListaEntity;
 import net.ausiasmarch.beetvServer.entity.UsuarioEntity;
-import net.ausiasmarch.beetvServer.repository.LikesRepository;
-import net.ausiasmarch.beetvServer.repository.ListaseriesRepository;
 import net.ausiasmarch.beetvServer.repository.TipousuarioRepository;
 import net.ausiasmarch.beetvServer.repository.UsuarioRepository;
 import net.ausiasmarch.beetvServer.service.FillService;
@@ -30,10 +22,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import net.ausiasmarch.beetvServer.repository.ListaRepository;
 
 @RestController
-@RequestMapping("/listaseries")
-public class ListaseriesController {
+@RequestMapping("/lista")
+public class ListaController {
 
     @Autowired
     HttpSession oHttpSession;
@@ -45,7 +38,7 @@ public class ListaseriesController {
     TipousuarioRepository oTipousuarioRepository;
 
     @Autowired
-    ListaseriesRepository oListaseriesRepository;
+    ListaRepository oListaseriesRepository;
 
     @Autowired
     FillService oFillService;
@@ -54,21 +47,21 @@ public class ListaseriesController {
     public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        ListaseriesEntity oListaseriesEntity = new ListaseriesEntity();
+        ListaEntity oListaseriesEntity = new ListaEntity();
 
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
                 if (oListaseriesRepository.existsById(id)) {
-                    return new ResponseEntity<ListaseriesEntity>(oListaseriesRepository.getOne(id), HttpStatus.OK);
+                    return new ResponseEntity<ListaEntity>(oListaseriesRepository.getOne(id), HttpStatus.OK);
                 } else {
-                    return new ResponseEntity<ListaseriesEntity>(oListaseriesRepository.getOne(id), HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<ListaEntity>(oListaseriesRepository.getOne(id), HttpStatus.NOT_FOUND);
                 }
             } else {  //usuario registrado
                 oListaseriesEntity = oListaseriesRepository.getOne(id);
                 if (oListaseriesEntity.getUsuario().getId().equals(oUsuarioEntity.getId())) {  // id_usuario coincide con el id del usuario que tiene la sesión activa
-                    return new ResponseEntity<ListaseriesEntity>(oListaseriesRepository.getOne(id), HttpStatus.OK);
+                    return new ResponseEntity<ListaEntity>(oListaseriesRepository.getOne(id), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
                 }
@@ -86,7 +79,7 @@ public class ListaseriesController {
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
                 if (oListaseriesRepository.count() <= 1000) {
-                    return new ResponseEntity<List<ListaseriesEntity>>(oListaseriesRepository.findAll(), HttpStatus.OK);
+                    return new ResponseEntity<List<ListaEntity>>(oListaseriesRepository.findAll(), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(null, HttpStatus.PAYLOAD_TOO_LARGE);
                 }
@@ -113,7 +106,7 @@ public class ListaseriesController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody ListaseriesEntity oListaseriesEntity) { // solo puede el admin
+    public ResponseEntity<?> create(@RequestBody ListaEntity oListaseriesEntity) { // solo puede el admin
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
@@ -123,7 +116,7 @@ public class ListaseriesController {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
 
                 if (oListaseriesEntity.getId() == null) {
-                    return new ResponseEntity<ListaseriesEntity>(oListaseriesRepository.save(oListaseriesEntity), HttpStatus.OK);
+                    return new ResponseEntity<ListaEntity>(oListaseriesRepository.save(oListaseriesEntity), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
@@ -134,7 +127,7 @@ public class ListaseriesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody ListaseriesEntity oListaseriesEntity) { // solo puede el admin
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody ListaEntity oListaseriesEntity) { // solo puede el admin
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
@@ -144,7 +137,7 @@ public class ListaseriesController {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
                 oListaseriesEntity.setId(id);
                 if (oListaseriesRepository.existsById(id)) {
-                    return new ResponseEntity<ListaseriesEntity>(oListaseriesRepository.save(oListaseriesEntity), HttpStatus.OK);
+                    return new ResponseEntity<ListaEntity>(oListaseriesRepository.save(oListaseriesEntity), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
@@ -178,8 +171,8 @@ public class ListaseriesController {
     @GetMapping("/page")
     public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
 
-        Page<ListaseriesEntity> oPage = oListaseriesRepository.findAll(oPageable);
-        return new ResponseEntity<Page<ListaseriesEntity>>(oPage, HttpStatus.OK);
+        Page<ListaEntity> oPage = oListaseriesRepository.findAll(oPageable);
+        return new ResponseEntity<Page<ListaEntity>>(oPage, HttpStatus.OK);
 
     }
 
@@ -192,7 +185,7 @@ public class ListaseriesController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                return new ResponseEntity<Long>(oFillService.listaseriesFill(amount), HttpStatus.OK);
+                return new ResponseEntity<Long>(oFillService.listaFill(amount), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }

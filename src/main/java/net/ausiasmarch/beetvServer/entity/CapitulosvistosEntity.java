@@ -7,8 +7,6 @@ package net.ausiasmarch.beetvServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,30 +16,28 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "comentario")
+@Table(name = "capitulosvistos")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ComentarioEntity implements Serializable {
+public class CapitulosvistosEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private String texto;
-
+    
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "id_usuario")
     private UsuarioEntity usuario;
-
+    
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "id_capitulo")
     private CapituloEntity capitulo;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
-    private List<LikesEntity> likes = new ArrayList<>();
+    
+    @Column(name = "visto")
+    private boolean visto;
 
     public Long getId() {
         return id;
@@ -49,14 +45,6 @@ public class ComentarioEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTexto() {
-        return texto;
-    }
-
-    public void setTexto(String texto) {
-        this.texto = texto;
     }
 
     public UsuarioEntity getUsuario() {
@@ -75,7 +63,13 @@ public class ComentarioEntity implements Serializable {
         this.capitulo = capitulo;
     }
 
-    public int getLikes() {
-        return likes.size();
+    public boolean isVisto() {
+        return visto;
     }
+
+    public void setVisto(boolean visto) {
+        this.visto = visto;
+    }
+    
+    
 }

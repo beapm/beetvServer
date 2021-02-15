@@ -19,9 +19,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "actuacion")
+@Table(name = "contenidolista")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ActuacionEntity implements Serializable {
+public class ContenidolistaEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +29,14 @@ public class ActuacionEntity implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
-    @JoinColumn(name = "id_capitulo")
-    private CapituloEntity capitulo;
+    @JoinColumn(name = "id_lista")
+    private ListaEntity lista;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
-    @JoinColumn(name = "id_personaje")
-    private PersonajeEntity personaje;
+    @JoinColumn(name = "id_serie")
+    private SerieEntity serie;
+
+    private boolean siguiendo;
 
     public Long getId() {
         return id;
@@ -44,19 +46,28 @@ public class ActuacionEntity implements Serializable {
         this.id = id;
     }
 
-    public CapituloEntity getCapitulo() {
-        return capitulo;
+    public ListaEntity getLista() {
+        return lista;
     }
 
-    public void setCapitulo(CapituloEntity capitulo) {
-        this.capitulo = capitulo;
+    public void setLista(ListaEntity lista) {
+        this.lista = lista;
     }
 
-    public PersonajeEntity getPersonaje() {
-        return personaje;
+    public SerieEntity getSerie() {
+        return serie;
     }
 
-    public void setPersonaje(PersonajeEntity personaje) {
-        this.personaje = personaje;
+    public void setSerie(SerieEntity serie) {
+        this.serie = serie;
     }
+
+    public boolean isSiguiendo() {
+        return siguiendo;
+    }
+
+    public void setSiguiendo(boolean siguiendo) {
+        this.siguiendo = siguiendo;
+    }
+
 }

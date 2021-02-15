@@ -133,10 +133,17 @@ public class SerieController {
 
     @GetMapping("/page")
     public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
-
         Page<SerieEntity> oPage = oSerieRepository.findAll(oPageable);
         return new ResponseEntity<Page<SerieEntity>>(oPage, HttpStatus.OK);
-
     }
 
+    @GetMapping("/puntuacion/{id}")
+    public ResponseEntity<?> puntuacion(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<Double>(oSerieRepository.puntuacionMedia(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/maspuntuadas")
+    public ResponseEntity<?> seriesMasPuntuadas(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+        return new ResponseEntity<List<SerieEntity>>(oSerieRepository.seriesMasPuntuadas(), HttpStatus.OK);
+    }
 }
