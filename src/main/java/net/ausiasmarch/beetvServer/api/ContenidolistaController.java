@@ -170,5 +170,13 @@ public class ContenidolistaController {
         }
 
     }
+    
+          /*
+    Devuelve la lista de contenidos de una lista
+    */
+   @GetMapping("/lista/{id}")
+    public ResponseEntity<?> getContenidos(@PathVariable(value = "id") Long id, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {     
+        return new ResponseEntity<Page>(oContenidolistaRepository.findByContenidolistaXLista(id, oPageable), HttpStatus.OK);
+    }
 
 }

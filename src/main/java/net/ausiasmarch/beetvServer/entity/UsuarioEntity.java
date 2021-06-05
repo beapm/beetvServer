@@ -3,6 +3,7 @@ package net.ausiasmarch.beetvServer.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,31 +36,37 @@ public class UsuarioEntity implements Serializable {
     private String email;
     private String login;
 
-    @JsonIgnore
     private String password;
 
     @JsonIgnore
+        @JsonProperty(access =Access.READ_ONLY)
     private String token;
 
     @JsonIgnore
+        @JsonProperty(access =Access.READ_ONLY)
     private boolean validado;
 
     @JsonIgnore
+        @JsonProperty(access =Access.READ_ONLY)
     private boolean activo;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "id_tipousuario")
+    @JsonProperty(access =Access.READ_ONLY)
     private TipousuarioEntity tipousuario;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = Access.READ_ONLY)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
     private List<ListaEntity> listas = new ArrayList<>();
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = Access.READ_ONLY)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
     private List<PuntuacionserieEntity> puntuaciones = new ArrayList<>();
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = Access.READ_ONLY)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = {CascadeType.REFRESH})
     private List<CapitulosvistosEntity> capitulosvistos = new ArrayList<>();
 

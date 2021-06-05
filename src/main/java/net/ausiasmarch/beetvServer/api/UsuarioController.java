@@ -88,6 +88,9 @@ public class UsuarioController {
     @PostMapping("/")
     public ResponseEntity<?> create(@RequestBody UsuarioEntity oUsuarioEntity) {
 
+        TipousuarioEntity oTipousuarioEntity = new TipousuarioEntity();
+        oTipousuarioEntity.setId(2L);
+        oUsuarioEntity.setTipousuario(oTipousuarioEntity);
         return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUsuarioEntity), HttpStatus.OK);
     }
 

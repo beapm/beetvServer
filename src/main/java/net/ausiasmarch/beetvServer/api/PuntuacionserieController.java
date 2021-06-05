@@ -69,14 +69,14 @@ public class PuntuacionserieController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody PuntuacionserieEntity oPuntuacionserieEntity) { // solo puede el admin
+    public ResponseEntity<?> create(@RequestBody PuntuacionserieEntity oPuntuacionserieEntity) { // puede admin y usuario registrado
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) {
+            if (oUsuarioEntity.getTipousuario().getId() == 1 || oUsuarioEntity.getTipousuario().getId() == 2) {
 
                 if (oPuntuacionserieEntity.getId() == null) {
                     return new ResponseEntity<PuntuacionserieEntity>(oPuntuacionserieRepository.save(oPuntuacionserieEntity), HttpStatus.OK);

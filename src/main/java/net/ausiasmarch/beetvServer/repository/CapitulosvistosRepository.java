@@ -15,7 +15,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CapitulosvistosRepository extends JpaRepository<CapitulosvistosEntity, Long> {
 
-    @Query(value = "SELECT * FROM capitulosvistos c WHERE c.id_usuario= :id_usuario", nativeQuery = true)
+    @Query(value = "select cv.id, cv.id_usuario, cv.id_capitulo, cv.visto from capitulosvistos cv inner join capitulo c on cv.id_capitulo=c.id "
+            + "inner join temporada t on t.id=c.id_temporada inner join serie s on s.id=t.id_serie where cv.id_usuario=:id_usuario", nativeQuery = true)
     Page<CapitulosvistosEntity> findByCapitulosvistosXUsuario(Long id_usuario, Pageable pageable);
+    
+    @Query(value = "select cv.visto from capitulosvistos cv where cv.id_usuario=:id_usuario and cv.id_capitulo=:id_capitulo", nativeQuery = true)
+    public Boolean checkCapitulosvistos (Long id_usuario, Long id_capitulo);
+    
+    @Query(value = "select count(*) from capitulosvistos cv where cv.id_usuario=:id_usuario and cv.id_capitulo=:id_capitulo", nativeQuery = true)
+    public Integer existeCapitulosvistos (Long id_usuario, Long id_capitulo);
 
 }

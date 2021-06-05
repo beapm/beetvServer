@@ -156,4 +156,11 @@ public class CapituloController {
 
     }
     
+        /*
+    Devuelve la lista de capitulos de una temporada
+    */
+   @GetMapping("/temporada/{id}")
+    public ResponseEntity<?> getCapitulos(@PathVariable(value = "id") Long id, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {     
+        return new ResponseEntity<Page>(oCapituloRepository.findByCapituloXTemporada(id, oPageable), HttpStatus.OK);
+    }
 }

@@ -192,5 +192,13 @@ public class ListaController {
         }
 
     }
+    
+       /*
+    Devuelve la lista de listas de un usuario
+    */
+   @GetMapping("/usuario/{id}")
+    public ResponseEntity<?> getListas(@PathVariable(value = "id") Long id, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {     
+        return new ResponseEntity<Page>(oListaseriesRepository.findByListaXUsuario(id, oPageable), HttpStatus.OK);
+    }
 
 }

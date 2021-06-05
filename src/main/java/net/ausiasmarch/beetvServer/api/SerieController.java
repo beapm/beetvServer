@@ -146,4 +146,18 @@ public class SerieController {
     public ResponseEntity<?> seriesMasPuntuadas(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
         return new ResponseEntity<List<SerieEntity>>(oSerieRepository.seriesMasPuntuadas(), HttpStatus.OK);
     }
+
+    @GetMapping("/busqueda/{nombre}")
+    public ResponseEntity<?> getBusqueda(@PathVariable(value = "nombre") String nombre, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+        Page<SerieEntity> oPage = oSerieRepository.findByNombreContaining(nombre, oPageable);
+        return new ResponseEntity<Page<SerieEntity>>(oPage, HttpStatus.OK);
+    }
+    
+    @GetMapping("/genero/{id}")
+    public ResponseEntity<?> seriesXGenero(@PathVariable(value = "id") Long id, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+        Page<SerieEntity> oPage = oSerieRepository.findBySerieXGenero(id, oPageable);
+        return new ResponseEntity<Page<SerieEntity>>(oPage, HttpStatus.OK);
+    }
+
+    
 }

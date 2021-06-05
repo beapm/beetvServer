@@ -20,4 +20,7 @@ public interface ContenidolistaRepository extends JpaRepository<ContenidolistaEn
 
     @Query(value = "SELECT * FROM contenidolista c WHERE c.id_usuario= :id_usuario", nativeQuery = true)
     Page<ContenidolistaEntity> findByContenidolistaXUsuario(Long id_usuario, Pageable pageable);
+    
+    @Query(value = "SELECT * FROM contenidolista c WHERE c.id_lista = :id_lista", nativeQuery = true)
+    Page<ContenidolistaEntity> findByContenidolistaXLista(Long id_lista, Pageable pageable);
 }

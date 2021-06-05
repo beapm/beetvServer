@@ -172,5 +172,21 @@ public class CapitulosvistosController {
         }
 
     }
+    
+    @GetMapping("/vistos/{id}") //devuelve la lista de capítulos que ha visto un usuario
+    public ResponseEntity<?> getVistos (@PathVariable (value = "id") Long id, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable ) {
+          return new ResponseEntity<Page>(oCapitulosvistosRepository.findByCapitulosvistosXUsuario(id, oPageable), HttpStatus.OK);
+    }
+    
+    @GetMapping("/check/{id_usuario}/{id_capitulo}")
+    public ResponseEntity<?> checkCapsvistos (@PathVariable (value= "id_usuario") Long id_usuario, @PathVariable (value= "id_capitulo") Long id_capitulo) {
+        if (oCapitulosvistosRepository.existeCapitulosvistos(id_usuario, id_capitulo)==1) {
+            return new ResponseEntity<Boolean>(oCapitulosvistosRepository.checkCapitulosvistos(id_usuario, id_capitulo), HttpStatus.OK);
+        } else if (oCapitulosvistosRepository.existeCapitulosvistos(id_usuario, id_capitulo)==0) {
+            return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+    }
 
 }

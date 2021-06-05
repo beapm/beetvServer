@@ -5,7 +5,6 @@
  */
 package net.ausiasmarch.beetvServer.repository;
 
-import net.ausiasmarch.beetvServer.entity.SerieEntity;
 import net.ausiasmarch.beetvServer.entity.TemporadaEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
